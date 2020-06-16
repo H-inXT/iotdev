@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{# 页面标题 #}
+{% block title%}
+    设备
+{% endblock%}
+
+{% block nav_blog_active %}active{% endblock %}
+
+{% load static %}
+{# load comment_tags #}
+{# load likes_tags #}
+{% block header_extens %}
+    <link rel="stylesheet" href="{% static 'dev/dev.css'%}">
+{% endblock %}
+    
+{# 页面内容 #}
+{% block content%}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-10">{# 小的写了，大的就可以不用写，如果格式一样的话#}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{%  block blog_list_title %}设备列表&nbsp;&nbsp;<a style="color: #583e7e; text-decoration: none;" href="{% url 'reg_device' %}">添加设备</a>{% endblock %}</div>
+                    {% comment %}
+
+                    {% endcomment %}
+                    {# comment #}
+                    <table class="table">
+                        {% csrf_token %}
+                        <thead>
+                            <tr class="info">
+                                <th>产品名称</th>
+                                <!-- <th>协议</th> -->
+                                <th>产品ID</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                                <th>数据</th>
+                                <th>历史数据</th>
+                                <th>删除</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for device in page_of_s.object_list %}
+                                <tr>
+                                    <td>{{ device.device_name }}</td>
+                                    <td>{{ device.id }}</td>
+                                    <td>{{ device.created_time }}</td>
+                                    
+                                    <td><a style="color: #583e7e; text-decoration: none;" href="{% url 'startClient' device.id device.authentication %}{# url 'startClient' device.id #}">
+                                            发送数据
+                                        </a>
+                                    </td>
+                                    <td>{% for key,value in data_list.items %}{% if key == device.id %}{{ value }}{% endif %}{% endfor %}</td>
+                                    <td>
+                                        <a style="color: #583e7e; text-decoration: none;" href="{% url 'history' device.id %}">
+                                            查看
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'delete_device' device.id device.product.id %}">
+                                            <span style='color: red;' class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                            </tbody>
+                    </table>
+                    {# endcomment #}
+                </div>
+                <!-- 分页器 -->
+                <div class="paginator"> 
+                    <ul class="pagination">
+                        <li>
+                        {# 上一页 #}
+                            {% if page_of_s.has_previous %}
+                                <a href="?page={{ page_of_s.previous_page_number}}" aria-label="Next">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}                     
+                        </li>
+                        {# 全部页码 #}
+                            {% for page_num in page_range%}
+                                {% if page_num == page_of_s.number %}{# 此时在当前页#}
+                                    <li class="active"><span>{{page_num}}</span></li>
+                                {% elif page_num == '...' %}
+                                    <li><span>{{page_num}}</span></li>
+                                {% else %}
+                                    <li><a href="?page={{page_num}}">{{page_num}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        <li>
+                        {# 下一页 #}
+                            {% if page_of_s.has_next %}
+                                <a href="?page={{ page_of_s.next_page_number}}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <p>
+                        共有{{ page_of_s.paginator.count }}个设备
+                        当前{{ page_of_s.number }}页，
+                        共{{page_of_s.paginator.num_pages }}页
+                    </p>
+                </div>
+            </div>
+            <div class="hidden-xs col-sm-4 col-md-4 col-lg-2">{# hidden-xs 超小时隐藏#}
+                <div class="panel panel-default">
+                    <div class="panel-heading">日期</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for device_date, device_count in blog_dates.items %}
+                                <a style="color: #583e7e;text-decoration: none;" href="{% url 'devs_with_date' device_date.year device_date.month %}">
+                                    {{ device_date|date:"Y年m月"}}（{{ device_count }}）
+                                </a>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock%}
+
+

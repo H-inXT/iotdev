@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block header_extens %}{% endblock %}
+
+{% block nav_home_active %}active{% endblock %}
+
+{% block content %}
+    <div class="containter">
+        <div class="row">
+        <!--             栅格四列      偏移四列 -->
+            <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">添加设备</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+<!-- ############################################################################## -->
+                    <div>
+                        <label for="device_name" >设备名称</label>
+                        <div>
+                            <input name="device_name" type="text" id="device_name"
+                                   required="required">
+                            </div>
+                    </div>
+                    <!-- 所属产品 -->
+                    <div>
+                        <label for="protocol" >所属产品</label>
+                        <div>
+                            <select name="product">
+                                {% for product in products %}
+                                    <option value="{{ product.id }}">{{ product.product_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 鉴权 -->
+                    <div>
+                        <label for="authentication" >鉴权信息:</label>
+                        <div>
+                            <input name="authentication" type="text"  id="number"
+                                   placeholder="1-15个英文，数字">
+                        </div>
+                    </div>
+                    <!-- 描述 -->
+                    <div>
+                    <label for="describe" >描述</label>
+                        <div>
+                            <input name="describe" type="text" id="describe"
+                                   required="required">
+                            </div>
+                    </div>
+<!-- ############################################################################# -->
+                        <div class="clearfix"></div>
+                        <p class="text-danger">{{ flag }}</p>
+                        <div class="pull-right">
+                            <input type="submit" value="添加" class="btn btn-primary ">
+                            <!-- <button class="btn btn-default" onclick="window.location.href='{{ return_back_url }}'">返回</button> -->
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock%}

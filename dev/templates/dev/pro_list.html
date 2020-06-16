@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{# 页面标题 #}
+{% block title%}
+    产品
+{% endblock%}
+
+{% block nav_blog_active %}active{% endblock %}
+
+{% load static %}
+{# load comment_tags #}
+{# load likes_tags #}
+{% block header_extens %}
+    <link rel="stylesheet" href="{% static 'dev/dev.css'%}">
+{% endblock %}
+    
+{# 页面内容 #}
+{% block content%}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-10">{# 小的写了，大的就可以不用写，如果格式一样的话#}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{%  block blog_list_title %}产品列表&nbsp;&nbsp;<a style="color: #583e7e; text-decoration: none;" href="{% url 'reg_product' %}">添加产品</a>{% endblock %}</div>
+
+                    <div class="panel-body">
+                        {# {% for blog in blogs %} #}
+                        {% for blog in page_of_s.object_list %}
+                            <div class="blog">
+                                <h3>
+                                    {# url 'blog_detail' blog.pk #}
+                                    <a  href="{% url 'device_list' blog.pk %}">{{ blog.product_name }}
+                                    </a>
+                                </h3>
+                                <p class="blog-info">
+                                 <span class="glyphicon glyphicon-tag"></span><a href="{% url 'product_internet' blog.protocol %}">{{ blog.protocol }}</a>&nbsp;&nbsp;
+                                <span style="display: inline;" class="glyphicon glyphicon-time"></span><span style="color: black;display: inline;">创建时间：{{ blog.created_time|date:"Y-m-d" }}</span>&nbsp;&nbsp;
+                               
+                                {# 方法一 #}
+                                {# 阅读({{ blog.readed_num }}) #}
+                                {% comment %}
+                                阅读({{ blog.get_read_num }})
+                                评论({% get_comment_count blog %})
+                                点赞({% get_like_count blog %})
+                                {% endcomment %}
+                                </p>
+                                
+                                <!-- 可用于中文                              吧htmli标签显示的那对去掉-->
+                                {% comment %}
+                                <div class="blog-content">{{ blog.content|striptags|truncatechars:120 }}</div> 
+                                {% endcomment %}
+                                <!-- 可用于英文 -->
+                                <!-- <p>{{ blog.content|truncatewords:30 }}</p>  -->
+                            </div>
+                        {% empty %}
+                            <div class="blog">
+                                <h3>暂无设备，敬请期待</h3>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- 分页器 -->
+                <div class="paginator"> 
+                    <ul class="pagination">
+                        <li>
+                        {# 上一页 #}
+                            {% if page_of_s.has_previous %}
+                                <a href="?page={{ page_of_s.previous_page_number}}" aria-label="Next">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}                     
+                        </li>
+                        {# 全部页码 #}
+                            {% for page_num in page_range%}
+                                {% if page_num == page_of_s.number %}{# 此时在当前页#}
+                                    <li class="active"><span>{{page_num}}</span></li>
+                                {% elif page_num == '...' %}
+                                    <li><span>{{page_num}}</span></li>
+                                {% else %}
+                                    <li><a href="?page={{page_num}}">{{page_num}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        <li>
+                        {# 下一页 #}
+                            {% if page_of_s.has_next %}
+                                <a href="?page={{ page_of_s.next_page_number}}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <p>
+                        共有{{ page_of_s.paginator.count }}个产品
+                        当前{{ page_of_s.number }}页，
+                        共{{page_of_s.paginator.num_pages }}页
+                    </p>
+                </div>
+            </div>
+
+            <div class="hidden-xs col-sm-4 col-md-4 col-lg-2">{# hidden-xs 超小时隐藏#}
+                <div class="panel panel-default">
+                  <div class="panel-heading">网络</div>
+                  <div class="panel-body">
+                    <ul class="blog-types">{# 前面的圆点消失#}
+                        {# for blog_type in blog_types #}
+                            <li>
+                                <a style="color: #583e7e; text-decoration: none;" href="/dev/internet/MQTT">
+                                    MQTT（{{ count_M }}）
+                                </a>
+                            </li>
+                            <li>
+                                <a style="color: #583e7e; text-decoration: none;" href="/dev/internet/UDP">
+                                    UDP（{{ count_U }}）
+                                </a>
+                            </li>
+                            <li>
+                                <a style="color: #583e7e; text-decoration: none;" href="/dev/internet/HTTP">
+                                    HTTP（{{ count_H }}）
+                                </a>
+                            </li>
+                        {# empty #}
+                            <!-- <li>暂无分类</li> -->
+                        {# endfor #}
+                    </ul>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">日期</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for pro_date, pro_count in pro_dates.items %}
+                                <a style="color:#583e7e; text-decoration: none;" href="{% url 'pros_with_date' pro_date.year pro_date.month %}">
+                                    {{ pro_date|date:"Y年m月"}}（{{ pro_count }}）
+                                </a>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock%}
+
+

@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: blue;
+}
+
+body{
+    margin-top: 70px!important;;
+}
+
+ul {
+    list-style-type: none;
+    /*list-style-type: none;*/
+}
+
+ul.navbar-right {
+    margin-right: 0;
+}
+
+div.a.navbar {
+    list-style-type: none;
+    font-size: 220%;
+}
+
+div.navbar a{
+    text-decoration: none;
+}
+
+div.footer {
+    margin-top: 3em;
+    color: #555;
+    position: fixed;
+}
+div.website-info {
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 0em ! important ;
+    /*position: fixed;*/
+}
+div.website-info p {
+    margin-bottom: 0;
+}
+
+

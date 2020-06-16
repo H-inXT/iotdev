@@ -1,0 +1,17 @@
+{% extends 'dev/device_list.html'%}
+{# {% extends 'base.html' %} #}
+
+{# 页面标题 #}
+{% block title%}
+    {# blog_type.type_name #}
+    产品
+{% endblock%}
+
+{# 此处可以删除 继承的模板已有 #}
+{% block nav_blog_active %}active{% endblock %}
+
+{% block blog_list_title %}
+    {# style="color: blue;text-decoration: none;" href="{% url 'device_list' blogs_with_date.product %}" #}
+    日期归档：{{ blogs_with_date }}
+    <p>查看全部设备</p>
+{% endblock%}

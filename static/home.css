@@ -1,0 +1,37 @@
+h1.home-content{
+    /*font-size: 220%;*/
+    /*left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);*/
+
+    text-align: center;
+    margin-top: 4em;
+    margin-bottom: 2em;
+}
+
+a {
+    text-decoration: none;
+}
+
+div#container {
+    /*图表居中 自适应*/
+    margin: 0 auto;
+    /*width: 600px;*/
+    height: 20em;
+    /*最小宽度 作用主要是自适应*/
+    min-width: 20em;
+    max-width: 30em;
+
+}
+
+div.hot-data {
+    text-decoration: none;
+    text-align: center;
+    margin-top: 2em;
+}
+
+div.hot-data a {
+    text-decoration: none;
+}
+
